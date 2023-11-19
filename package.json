@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "dev": "npx nodemon",
-    "start": "node index.ts"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "Cansy",
