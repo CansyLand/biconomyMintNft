@@ -81,7 +81,7 @@ export async function mintNFT(sendToAddress:string): Promise<MintNFTResponse> {
 
   let partialUserOp = await smartAccount.buildUserOp([transaction], {
     paymasterServiceData: {
-      mode: PaymasterMode.SPONSORED,
+      mode: "SPONSORED" as PaymasterMode, //PaymasterMode.SPONSORED,
     },
   });
 
