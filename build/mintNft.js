@@ -98,7 +98,7 @@ function mintNFT(sendToAddress) {
             if (e instanceof Error) {
                 // console.error("Error received: ", e.message);
                 // Return an object with the error message
-                return { success: false, error: `Error during transaction: ${e.message}` };
+                //return { success: false, error: `Error during transaction: ${e.message}` };
             }
             else {
                 // Handle cases where e is not an Error object

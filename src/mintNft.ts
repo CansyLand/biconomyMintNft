@@ -61,7 +61,7 @@ type MintNFTResponse = {
   error?: string;
 };
 
-export async function mintNFT(sendToAddress:string): Promise<MintNFTResponse>  {
+export async function mintNFT(sendToAddress:string)  { //: Promise<MintNFTResponse> 
   const smartAccount = await createAccount();
   const address = await smartAccount.getAccountAddress();
   const nftInterface = new ethers.utils.Interface([
@@ -122,7 +122,7 @@ export async function mintNFT(sendToAddress:string): Promise<MintNFTResponse>  {
     if (e instanceof Error) {
       // console.error("Error received: ", e.message);
       // Return an object with the error message
-      return { success: false, error: `Error during transaction: ${e.message}` };
+      //return { success: false, error: `Error during transaction: ${e.message}` };
     } else {
       // Handle cases where e is not an Error object
       // console.error("An unknown error occurred");
