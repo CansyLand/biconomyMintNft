@@ -33,7 +33,7 @@ const bundler: IBundler = new Bundler({
 });
 
 const paymaster: IPaymaster = new BiconomyPaymaster({
-  paymasterUrl: process.env.PAYMASTER_URL || "",
+  paymasterUrl: "https://paymaster.biconomy.io/api/v1/80001/LSztuZ-59.307c100d-f1e0-4396-b73a-395ab08814f5",
 });
 
 async function createAccount() {
@@ -54,22 +54,13 @@ async function createAccount() {
   return biconomyAccount;
 }
 
-type MintNFTResponse = {
-  success: boolean;
-  transactionHash?: string;
-  openseaLink?: string;
-  error?: string;
-};
-
-export async function mintNFT(sendToAddress:string): Promise<MintNFTResponse> {
-
+export async function mintNFT(sendToAddress:string) {
   const smartAccount = await createAccount();
   const address = await smartAccount.getAccountAddress();
   const nftInterface = new ethers.utils.Interface([
     "function mint(address _to, uint256 _id, uint256 amount, bytes data)",
   ]);
 
-  // address, id, amount, data
   const data = nftInterface.encodeFunctionData("mint", [sendToAddress, 0, 1, '0x']);
 
   const nftAddress = "0xc85918FDC5035A922DE13Eb8B888Ab2f4f781FD1"; // PopZing Proxy
@@ -81,7 +72,7 @@ export async function mintNFT(sendToAddress:string): Promise<MintNFTResponse> {
 
   let partialUserOp = await smartAccount.buildUserOp([transaction], {
     paymasterServiceData: {
-      mode: "SPONSORED" as PaymasterMode, //PaymasterMode.SPONSORED,
+      mode: PaymasterMode.SPONSORED,
     },
   });
 
@@ -93,36 +84,21 @@ export async function mintNFT(sendToAddress:string): Promise<MintNFTResponse> {
       await biconomyPaymaster.getPaymasterAndData(partialUserOp);
     partialUserOp.paymasterAndData = paymasterAndDataResponse.paymasterAndData;
   } catch (e) {
-    if (e instanceof Error) {
-      console.error("Error received: ", e.message);
-      // Return an object with the error message
-      return { success: false, error: `Error during transaction: ${e.message}` };
-    } else {
-      // Handle cases where e is not an Error object
-      console.error("An unknown error occurred");
-      return { success: false, error: "An unknown error occurred" };
-    }
+    console.log("error received ", e);
   }
 
   try {
     const userOpResponse = await smartAccount.sendUserOp(partialUserOp);
     const transactionDetails = await userOpResponse.wait();
-    return {
-      success: true,
-      transactionHash: transactionDetails.receipt.transactionHash,
-      openseaLink: `https://testnets.opensea.io/${address}`
-    };
+    console.log(
+      `transactionDetails: https://mumbai.polygonscan.com/tx/${transactionDetails.receipt.transactionHash}`
+    );
+    console.log(
+      `view minted nfts for smart account: https://testnets.opensea.io/${address}`
+    );
   } catch (e) {
-      // Check if e is an instance of Error
-      if (e instanceof Error) {
-        // console.error("Error received: ", e.message);
-        // Return an object with the error message
-        return { success: false, error: `Error during transaction: ${e.message}` };
-      } else {
-        // Handle cases where e is not an Error object
-        // console.error("An unknown error occurred");
-        return { success: false, error: "An unknown error occurred" };
-      }
+    console.log("error received ", e);
   }
 }
 
+// mintNFT("0x33a7d139955c1B34033Fa5187D752AF986Eace9e");
