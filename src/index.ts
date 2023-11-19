@@ -6,7 +6,7 @@ const port = process.env.PORT || 3001;
 
 app.use(express.json());
 
-app.post('/mintNFT', async (req:any, res) => {
+app.post('/mintNFT', async (req, res) => {
     try {
         const { sendToAddress } = req.body;
         if (!sendToAddress) {
