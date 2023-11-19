@@ -54,7 +54,14 @@ async function createAccount() {
   return biconomyAccount;
 }
 
-export async function mintNFT(sendToAddress:string) {
+type MintNFTResponse = {
+  success: boolean;
+  transactionHash?: string;
+  openseaLink?: string;
+  error?: string;
+};
+
+export async function mintNFT(sendToAddress:string): Promise<MintNFTResponse>  {
   const smartAccount = await createAccount();
   const address = await smartAccount.getAccountAddress();
   const nftInterface = new ethers.utils.Interface([
@@ -84,7 +91,16 @@ export async function mintNFT(sendToAddress:string) {
       await biconomyPaymaster.getPaymasterAndData(partialUserOp);
     partialUserOp.paymasterAndData = paymasterAndDataResponse.paymasterAndData;
   } catch (e) {
-    console.log("error received ", e);
+    // console.log("error received ", e);
+    if (e instanceof Error) {
+      console.error("Error received: ", e.message);
+      // Return an object with the error message
+      // return { success: false, error: `Error during transaction: ${e.message}` };
+    } else {
+      // Handle cases where e is not an Error object
+      console.error("An unknown error occurred");
+      return { success: false, error: "An unknown error occurred" };
+    }
   }
 
   try {
@@ -96,8 +112,22 @@ export async function mintNFT(sendToAddress:string) {
     console.log(
       `view minted nfts for smart account: https://testnets.opensea.io/${address}`
     );
+    return {
+      success: true,
+      transactionHash: transactionDetails.receipt.transactionHash,
+      openseaLink: `https://testnets.opensea.io/${address}`
+    };
   } catch (e) {
-    console.log("error received ", e);
+    // console.log("error received ", e);
+    if (e instanceof Error) {
+      // console.error("Error received: ", e.message);
+      // Return an object with the error message
+      return { success: false, error: `Error during transaction: ${e.message}` };
+    } else {
+      // Handle cases where e is not an Error object
+      // console.error("An unknown error occurred");
+      return { success: false, error: "An unknown error occurred" };
+    }
   }
 }
 
