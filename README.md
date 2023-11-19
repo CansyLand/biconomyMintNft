@@ -1,25 +1,97 @@
 
-# Biconomy Quickstarter
+# Biconomy MintNFT API
 
-This Repository is used in the quickstart guide for the [Biconomy SDK](https://docs.biconomy.io/quickstart) as well as the Node JS guides.
+This project provides an API for minting NFTs using Biconomy on the Polygon Mumbai testnet. It's built with Express.js and integrates with Biconomy's smart contract services.
 
-This is a basic starter kit to create Node JS scripts with Typescript. It includes only a script for development and is meant for educational puproses. You will need additional scripts to optimize for production.
+## Features
 
+- Mint NFTs to a specified address.
+- Integration with Biconomy for gasless transactions.
+- Error handling for transaction failures.
+
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- Yarn or npm
+- A wallet with a private key (for Biconomy integration)
 
 ## Installation
 
-Clone this repository and then run
-
+### 1. Clone the repository:
 ```bash
-  yarn
+git clone https://github.com/CansyLand/biconomyMintNft.git
+cd biconomyMintNft
 ```
 
-Alternatively you can use `npm` or `pnpm` if that suits you. 
+### 2. Install dependencies:
+```bash
+yarn install
+```
 
-The main purpose of this repository is to serve as the starting point for the Biconomy SDK Quick Start guide. 
+or
 
+```bash
+npm install
+```
 
+### 3. Set up environment variables:
+Create a .env file in the root directory and add your private key and paymaster url:
+```bash
+PRIVATE_KEY=your_private_key_here
+PAYMASTER_URL=your_paymaster_url_here
+```
 
-## Pull requests welcome
+## Running the Server
+Run the server using:
+```bash
+yarn dev
+```
 
-Have any improvements to be made? Feel free to make a Pull Request! 
+or
+
+```bash
+npm run dev
+```
+
+The server will be available at http://localhost:3000.
+
+## API Usage
+Endpoint: POST /mintNFT
+
+Request Body:
+```bash
+{
+  "sendToAddress": "0x..."
+}
+```
+
+Response:
+
+On Success:
+```bash
+{
+  "message": "NFT minting initiated",
+  "transactionDetails": {
+    "success": true,
+    "transactionHash": "...",
+    "openseaLink": "..."
+  }
+}
+```
+On Error:
+```bash
+{
+  "message": "Error message"
+}
+```
+
+## Contributing
+
+Contributions are welcome. Please feel free to open an issue or submit a pull request with your improvements.
+
+## License
+
+This project is licensed under the ISC License.

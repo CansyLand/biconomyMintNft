@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon"
+    "dev": "npx nodemon",
+    "start": "node index.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cansy",
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.21",

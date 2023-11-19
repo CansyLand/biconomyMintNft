@@ -33,7 +33,7 @@ const bundler: IBundler = new Bundler({
 });
 
 const paymaster: IPaymaster = new BiconomyPaymaster({
-  paymasterUrl: "https://paymaster.biconomy.io/api/v1/80001/LSztuZ-59.307c100d-f1e0-4396-b73a-395ab08814f5",
+  paymasterUrl: process.env.PAYMASTER_URL || "",
 });
 
 async function createAccount() {
