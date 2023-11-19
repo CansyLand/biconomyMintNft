@@ -5,12 +5,15 @@ import { mintNFT } from './mintNft';
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Enable preflight across-the-board
+app.options('*', cors());
+
 app.use(express.json());
 
-app.use(cors());
-app.use(express.json());
+// app.use(cors());
+// app.use(express.json());
 
-app.post('/mintNFT', async (req, res) => {
+app.post('/mintNFT', cors(),async (req, res) => {
     try {
         const { sendToAddress } = req.body;
         if (!sendToAddress) {
